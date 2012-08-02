@@ -1,12 +1,12 @@
 module GitHosting
 	class GitoliteConfig
         	DUMMY_REDMINE_KEY="redmine_dummy_key"
-		ARCHIVED_REDMINE_KEY="redmine_archived_project"
         	GIT_DAEMON_KEY="daemon"
           	ADMIN_REPO = "gitolite-admin"
           	DEFAULT_ADMIN_KEY_NAME = "id_rsa"
 
 		def initialize file_path
+      # Rails.logger.info("Initializing")
 			@path = file_path
 			load
 		end
@@ -16,35 +16,35 @@ module GitHosting
 		end
 
 		def save
+      
+      # Rails.logger.info("Saving configuration to #{@path}\n\n#{content}\n\n")
 			File.open(@path, "w") do |f|
+        # Rails.logger.info("We're inside the File.open() call #{f}")
 				f.puts content
 			end
+      # Rails.logger.info("Wrapping up here")
 			@original_content = content
 		end
 
 		def add_write_user repo_name, users
-			repository(repo_name).add "RW+", users.sort
+      # Rails.logger.info("add_write_user #{repo_name} #{users}")
+			repository(repo_name).add "RW+", users
 		end
 
 		def set_write_user repo_name, users
-			repository(repo_name).set "RW+", users.sort
+      # Rails.logger.info("set_write_user #{repo_name} #{users}")
+			repository(repo_name).set "RW+", users
 		end
 
 		def add_read_user repo_name, users
-			repository(repo_name).add "R", users.sort
+      # Rails.logger.info("add_read_user #{repo_name} #{users}")
+			repository(repo_name).add "R", users
 		end
 
 		def set_read_user repo_name, users
-			repository(repo_name).set "R", users.sort
+      # Rails.logger.info("set_read_user #{repo_name} #{users}")
+			repository(repo_name).set "R", users
 		end
-
-		def mark_with_dummy_key repo_name
-                	add_read_user repo_name, [DUMMY_REDMINE_KEY]
-                end
-
-		def mark_archived repo_name
-                	add_read_user repo_name, [ARCHIVED_REDMINE_KEY]
-                end
 
                 # Grab admin key (assuming it exists)
                 def get_admin_key 
@@ -77,11 +77,16 @@ module GitHosting
                 # In addition, if there are any redmine keys, delete the GIT_DAEMON_KEY as well, 
                 # since we assume this under control of redmine server.
                 def delete_redmine_keys repo_name
-			return unless @repositories[repo_name] && is_redmine_repo?(repo_name)
+                  # Rails.logger.info("delete_redmine_keys(#{repo_name})")
+			            return unless @repositories[repo_name] && is_redmine_repo?(repo_name)
                 
+                  # Rails.logger.info("Actually doing delete_redmine_keys(#{repo_name})")
                 	repository(repo_name).rights.each do |perm, users|
-                		users.delete_if {|key| ((is_redmine_key? key) || (is_daemon_key? key))}
-                        end
+                    users.delete_if {|key| 
+                     # Rails.logger.info("users.delete_if {|#{key}| ((#{is_redmine_key? key}) || (#{is_daemon_key? key}))}")
+                     ((is_redmine_key? key) || (is_daemon_key? key))
+                    }
+                  end
                 end
 		
 		def repo_has_no_keys? repo_name
@@ -89,7 +94,7 @@ module GitHosting
                 end
 
                 def is_redmine_key? keyname
-                	(GitolitePublicKey::ident_to_user_token(keyname) || keyname == DUMMY_REDMINE_KEY || keyname == ARCHIVED_REDMINE_KEY) ? true : false
+                	(GitolitePublicKey::ident_to_user_token(keyname) || keyname == DUMMY_REDMINE_KEY) ? true : false
                 end
 
                 def is_daemon_key? keyname
@@ -97,7 +102,9 @@ module GitHosting
                 end
 
 		def changed?
+      # Rails.logger.info("============\nchanged? #{@original_content != content}\n===========\nHere's the new content:\n\n#{content}\n\n============\nHere's the old content:\n\n#{@original_content}\n\n============\n\n")
 			@original_content != content
+      
 		end
 
 		def all_repos
