@@ -1,21 +1,42 @@
-'en':
-  label_all_git: Automatically Initialize Git Repositories For New Projects
-  label_delete_git_repositories: Delete Git Repository When Project is Deleted
+'hu':
+  label_all_git: Automatically Initialize Git Repositories For New Projects 
+  label_delete_git_repositories: Delete Git Repository When Project Deleted<br/>(will be place in Recycle Bin)
   label_git_server: Gitolite Server Domain
   label_http_server: HTTP Server Domain (for git http urls)
   label_git_user: Git Username
   label_gitolite_identity_public_key_file: Gitolite SSH Identity File (Public Key)
   label_gitolite_identity_file: Gitolite SSH Identity File (Private Key)
-  label_git_repository_base_path: Git Repository Base Path (Relative to git user home)
+  label_git_repository_base_path: Git Repository Base Path<br/>(Relative to git user home)
+  label_git_recycle_base_path: Git Recycle Bin Base Path <br/>(Relative to git user home)
+  label_git_recycle_expire_time: Expire Time for Repositories in Recycle Bin <br/>(in hours)
+  label_git_lock_wait_time: Synchronization Lock Wait Time <br/>(in seconds)
+  label_cannot_change_selinux: Cannot Change in Current Configuration
+  label_http_server_subdir: Subdirectory for HTTP access<br/>(Relative to Redmine Root)
+  label_git_redmine_subdir: Subdirectory for Redmine-managed Repos<br/>(Relative to Git Repository Base Path)
+  label_git_repository_hierarchy: Directory and URL Structure for<br/>Redmine-managed Repositories
+  label_basic_settings: Basic Settings
+  label_gitolite_access_URLs: Gitolite Access URL Settings
+  label_gitolite_repository_settings: Gitolite Repository Settings
+  label_current_access_patterns: Current Repository Access Patterns
+  label_storage: Repo Storage
+  label_ssh_access: SSH Access
+  label_http_access: HTTP Access
+  label_tmp_data_dir: Temporary Dir for Locks and Data (Absolute)
+  label_script_dir: Scripts (Absolute/Relative to Redmine Root)
+  label_default_git_daemon: Default Git Daemon Mode for New Repos
+  label_default_smart_http: Default Smart HTTP Mode for New Repos
+  label_default_notify_cia: Default Notify CIA Mode for New Repos
 
   field_git_daemon: Git Daemon
   field_git_http: Git Smart HTTP
   field_notify_cia: Notify CIA.vc
-
+  
 
   label_git_show_urls: "Show checkout URL's"
   label_enabled: Enabled
   label_disabled: Disabled
+  label_flat: Flat
+  label_hierarchical: Hierarchical
   label_https_only: HTTPS Only
   label_https_and_http: HTTPS and HTTP
 
@@ -32,18 +53,25 @@
   label_git_hook_header: Repository Hooks
   label_git_hook_debug: Run hooks in Debug mode
   label_git_hooks_are_asynchronous: Run hooks asynchronously
+  label_git_force_hooks_update: Force hooks to be Updated
   label_hook_installed: Hook installed
 
   label_public_keys: Public keys
-  label_public_key_new: New public key
+  label_current_public_keys: Current Public keys
+  label_identifier_can_be_arbitrary: Identifier (can be any meaningful string)
+  label_cut_and_paste: Key (cut and paste entire .pub file)
+  label_public_key_new: Enter new Public key
+  label_public_key_edit: Edit existing Public key
   field_public_key: Key
-  notice_public_key_updated: Public key was successfully updated.
-  notice_public_key_added: Public key was successfully added.
-  label_key_cannot_be_changed_please_create_new_key: 'The key cannot be altered anymore. However, you can deactivate it and create a new one.'
+  notice_public_key_updated: Public key '%{title}' was successfully updated.
+  notice_public_key_added: Public key '%{title}' was successfully added.
+  notice_public_key_deleted: Public key '%{title}' was successfully deleted.
+  label_key_cannot_be_changed_please_create_new_key: 'The key cannot be altered anymore. However, you can delete it and create a new one.'
   activerecord:
     errors:
       messages:
         'may not be changed': 'may not be changed'
+  text_gitolite_key_destroy_confirmation: Are you sure you want to destroy '%{title}'?
 
   label_git_cache_max_time: Max Cache Time
   label_git_cache_max_elements: Max Cache Elements
@@ -70,6 +98,33 @@
   mirror_notice_created: Mirror was successfully created
   mirror_notice_updated: Mirror was successfully updated
   mirror_notice_create_failed: Failed to create mirror
+  mirror_notice_update_failed: Failed to update mirror
+  label_push_mode: Mirror update mode
+  label_full_mirror: Complete Mirroring
+  label_forced_update: Force Update Remote
+  label_fast_forward: Fast Forward (Unforced)
+  label_inactive: Inactive
+  label_mirror: Mirror
+  label_forced: Forced
+  label_unforced: Unforced
+  all_references: All&nbsp;Refs
+  all_branches: All&nbsp;Branches
+  all_tags: All&nbsp;Tags
+  explicit: Explicit
+  field_include_all_branches: Push all Branches
+  field_include_all_tags: Push all Tags
+  field_explicit_refspec: Explicit Reference Spec
+  label_post_receive_url_create: Create Repository Post-receive URL
+  label_post_receive_url_delete: Delete Repository Post-receive URL
+  label_post_receive_url_edit: Edit Repository Post-receive URL
+  post_receive_url_notice_deleted: Post-receive URL was successfully deleted
+  post_receive_url_notice_created: Post-receive URL was successfully created
+  post_receive_url_notice_updated: Post-receive URL was successfully updated
+  post_receive_url_notice_create_failed: Failed to create Post-receive URL
+  post_receive_url_notice_update_failed: Failed to update Post-receive URL
+  field_mode: Mode
+  label_github_post: GitHub&nbsp;POST
+  label_empty_get: Empty&nbsp;GET
 
   button_push: Push
   button_push_title: "Push To Mirror"
@@ -77,3 +132,8 @@
   mirror_push_output_label: 'Output:'
   mirror_push_sucess: Success.
   mirror_push_fail: Failed!
+
+  display_access_setup: Assume that <em>project1</em> is a parent of <em>project2</em>, and <em>project2</em> is a parent of <em>project3</em>. Given the current configuration, <em>project3</em>'s repository has the following properties
+  display_access_emphasis: In the above patterns, <em>emphasized</em> components represent context-dependent elements. 
+  display_access_hierarchical: Parent projects are included in the URLs, since the repository is in <em>Hierarchical</em> mode.
+  display_access_flat: Parent projects are not included in the URLs, since the repository is in <em>Flat</em> mode.

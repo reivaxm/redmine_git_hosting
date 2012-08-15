@@ -3,11 +3,11 @@
 <%= call_hook(:view_my_account_contextual, :user => @user)%>
 </div>
 <h2><%=l(:label_my_account)%></h2>
-<%= error_messages_for 'user' %>
-<%= error_messages_for :gitolite_public_key %>
+<% #error_messages_for 'user' %>
+<% #error_messages_for :gitolite_public_key %>
 
 <div class="splitcontentleft">
-	<% form_for :user, @user, :url => { :action => "account" },
+	<%= form_for :user, @user, :url => { :action => "account" },
 					:builder => TabularFormBuilder,
 					:lang => current_language,
 					:html => { :id => 'my_account_form' } do |f| %>
@@ -64,7 +64,7 @@
 
 	<div class="box">
 		<h4><%=l(:label_public_key_new)%></h4>
-		<% form_for :public_key, @gitolite_public_key, :url => { :controller => 'gitolite_public_keys', :action => "create" }, :builder => TabularFormBuilder, :lang => current_language do |f| %>
+		<%= form_for :public_key, @gitolite_public_key, :url => { :controller => 'gitolite_public_keys', :action => "create" }, :builder => TabularFormBuilder, :lang => current_language do |f| %>
 			<p>
 				<label for="public_key_title"><%=l(:field_identifier)%></label>
 				<br/>
@@ -79,4 +79,4 @@
 <% content_for :sidebar do %>
 	<%= render :partial => 'sidebar' %>
 <% end %>
-<% html_title(l(:label_my_account)) -%>
+<% html_title(l(:label_my_account)) %>

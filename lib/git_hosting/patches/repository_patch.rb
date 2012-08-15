@@ -1,3 +1,5 @@
+
+
 module GitHosting
 	module Patches
 		module RepositoryPatch
@@ -19,24 +21,65 @@ module GitHosting
 					new_repo = factory_without_git_extra_init(klass_name, *args)
 					if new_repo.is_a?(Repository::Git)
 						if new_repo.extra.nil?
-							e = GitRepositoryExtra.new()
-							new_repo.extra = e
+							# Note that this autoinitializes default values and hook key
+                                                	GitHosting.logger.error "Automatic initialization of git_repository_extra failed for #{self.project.to_s}"
 						end
 					end
 					return new_repo
 				end
+                                def fetch_changesets_with_disable_update
+                                	# Turn of updates during repository update
+                        		GitHostingObserver.set_update_active(false);
+
+                        		# Do actual update
+                        		fetch_changesets_without_disable_update
+
+                        		# Reenable updates to perform a sync of all projects
+					GitHostingObserver.set_update_active(:resync_all);
+                        	end
 			end
+
+                        module InstanceMethods
+                        	# New version of extra() -- construct extra association if missing
+                        	def extra
+					retval = self.git_extra
+                                	if retval.nil?
+                                        	# Construct new extra structure, followed by updating hooks (if necessary)
+                                		GitHostingObserver.set_update_active(false);
+
+                                        	retval = GitRepositoryExtra.new()
+                                		self.git_extra = retval  # Should save object...
+
+                                        	# If self.project != nil, trigger repair of hooks
+                                		GitHostingObserver.set_update_active(true, self.project, :resync_hooks => true)
+                                        end
+                                	retval
+                                end
+
+                                def extra=(new_extra_struct)
+                                	self.git_extra=(new_extra_struct)
+                                end
+                        end
 
 
 			def self.included(base)
-				base.extend(ClassMethods)
 				base.class_eval do
 					unloadable
+
+                            		extend(ClassMethods)
 					class << self
 						alias_method_chain :factory, :git_extra_init
+		                                alias_method_chain :fetch_changesets, :disable_update
 					end
-				end
 
+                                        # initialize association from git repository -> git_extra
+                                        has_one :git_extra, :foreign_key =>'repository_id', :class_name => 'GitRepositoryExtra', :dependent => :destroy
+
+                                        # initialize association from git repository -> cia_notifications
+                                        has_many :cia_notifications, :foreign_key =>'repository_id', :class_name => 'GitCiaNotification', :dependent => :destroy, :extend => GitHosting::Patches::RepositoryCiaFilters::FilterMethods
+
+                                        include(InstanceMethods)
+				end
 			end
 		end
 	end

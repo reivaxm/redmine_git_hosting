@@ -1,1 +1,4 @@
 .*.swp
+bin/
+selinux/tmp/
+.DS_Store
