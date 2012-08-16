@@ -5,8 +5,8 @@ class CreateGitCaches < ActiveRecord::Migration
 			t.column :command_output, :binary
 			t.column :proj_identifier, :string
 			t.timestamps
-			t.index :command
 		end
+		add_index :git_caches, :command
 	end
 
 	def self.down
