@@ -15,9 +15,9 @@ Redmine::Plugin.register :redmine_git_hosting do
 	url 'https://github.com/ericpaulbishop/redmine_git_hosting'
 
 	settings :default => {
-		'httpServer' => 'redmine.beta-sandbox.com',
+		'httpServer' => 'localhost',
     		'httpServerSubdir' => '',
-		'gitServer' => 'redmine.beta-sandbox.com',
+		'gitServer' => 'localhost',
 		'gitUser' => 'git',
 		'gitRepositoryBasePath' => 'repositories/',
     		'gitRedmineSubdir' => '',
@@ -28,8 +28,8 @@ Redmine::Plugin.register :redmine_git_hosting do
 		'gitoliteIdentityFile' => Rails.root + '/.ssh/gitolite_admin_id_rsa',
 		'gitoliteIdentityPublicKeyFile' => Rails.root + '/.ssh/gitolite_admin_id_rsa.pub',
 		'allProjectsUseGit' => 'false',
-    		'gitDaemonDefault' => '1',   # Default is Daemon enabled
-		'gitHttpDefault' => '1',     # Default is HTTP_ONLY
+    		'gitDaemonDefault' => '1',    # Default is Daemon enabled
+		'gitHttpDefault' => '1',      # Default is HTTP_ONLY
    		'gitNotifyCIADefault' => '0', # Default is CIA Notification disabled
 		'deleteGitRepositories' => 'false',
 		'gitRepositoriesShowUrl' => 'true',
