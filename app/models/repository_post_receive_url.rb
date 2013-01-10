@@ -11,8 +11,8 @@ class RepositoryPostReceiveUrl < ActiveRecord::Base
   validates_format_of :url, :with => URI::regexp(%w(http https))
   validates_associated :project
 
-  named_scope :active, {:conditions => {:active => RepositoryPostReceiveUrl::STATUS_ACTIVE}}
-  named_scope :inactive, {:conditions => {:active => RepositoryPostReceiveUrl::STATUS_INACTIVE}}
+  scope :active, where(:active => RepositoryPostReceiveUrl::STATUS_ACTIVE)
+  scope :inactive, where(:active => RepositoryPostReceiveUrl::STATUS_INACTIVE)
 
   validates_inclusion_of :mode, :in => [:github, :get]
   def mode

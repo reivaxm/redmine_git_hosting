@@ -46,7 +46,7 @@ module GitHosting
 			def scm_cmd_with_sudo(*args, &block)
 
 				args.each do |a|
-					a.gsub!(/^\.\-\w_\:]/, '')
+					a.gsub!(/^\.\-\w_\:\]/, '')
 				end
 				max_cache_time     = (Setting.plugin_redmine_git_hosting['gitCacheMaxTime']).to_i             # in seconds, default = 60
 				max_cache_elements = (Setting.plugin_redmine_git_hosting['gitCacheMaxElements']).to_i         # default = 100

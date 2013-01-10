@@ -17,10 +17,10 @@ class RepositoryMirror < ActiveRecord::Base
 
     validate :check_refspec
 
-    named_scope :active, {:conditions => {:active => RepositoryMirror::STATUS_ACTIVE}}
-    named_scope :inactive, {:conditions => {:active => RepositoryMirror::STATUS_INACTIVE}}
+    scope :active, where(:active => RepositoryMirror::STATUS_ACTIVE)
+    scope :inactive, where(:active => RepositoryMirror::STATUS_INACTIVE)
 
-    named_scope :has_explicit_refspec, {:conditions => ['push_mode > 0']}
+    scope :has_explicit_refspec, where(['push_mode > 0'])
 
     def to_s
 	return File.join("#{project.identifier}-#{url}")

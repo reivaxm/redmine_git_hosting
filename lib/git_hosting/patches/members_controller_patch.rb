@@ -7,7 +7,7 @@ module GitHosting
       def self.included(base)
       	base.send(:include, InstanceMethods)
       	base.class_eval do
-      		alias_method_chain :create, :disable_update
+          alias_method_chain :create, :disable_update
           alias_method_chain :update, :disable_update
           alias_method_chain :destroy, :disable_update
         end
